@@ -1,0 +1,61 @@
+[project]
+name = "mypy-pure"
+version = "0.1.0"
+description = "A mypy plugin that adds support for checking pure functions."
+authors = [
+  { name="Diego J. Romero López", email="diegojromerolopez@gmail.com" }
+]
+classifiers=[
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries",
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License"
+]
+dependencies = [
+    "mypy>=1.0",
+]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.10"
+
+[project.entry-points."mypy.plugins"]
+pure = "mypy_pure.plugin:plugin"
+
+[project.urls]
+repository = "https://github.com/diegojromerolopez/mypy-pure"
+documentation = "https://github.com/diegojromerolopez/mypy-pure"
+"Bug Tracker" = "https://github.com/diegojromerolopez/mypy-pure/issues"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "coverage>=7.9.2",
+    "flake8>=7.3.0",
+    "flake8-quotes>=3.4.0",
+    "isort>=6.0.1",
+    "ruff>=0.12.11",
+]
+
+[tool.black]
+line-length = 120
+target-version = ['py310']
+skip_string_normalization = true
+
+[tool.flake8]
+inline-quotes = "'"
+multiline-quotes = "'''"
+docstring-quotes = '"""'
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_defs = false
