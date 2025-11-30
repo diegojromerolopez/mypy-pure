@@ -112,3 +112,25 @@ class TestPlugin(TestCase):
         stdout, stderr, exit_status = self.__run_mypy(resource)
         self.assertEqual(0, exit_status)
         self.assertEqual(stdout.strip(), '', f'Unexpected mypy output: {stdout}')
+
+    def test_pure_function_calls_multiple_custom_impure(self):
+        resource = self._get_resource_path('pure_calls_multiple_impure.py')
+        config = self._get_resource_path('mypy_custom_multiple.ini')
+        stdout, stderr, exit_status = self.__run_mypy(resource, config)
+        self.assertEqual(0, exit_status, f'Mypy failed with exit code {exit_status}. Stdout: {stdout} Stderr: {stderr}')
+        self.assertIn(
+            "Function 'pure_func' is annotated as pure but calls impure functions",
+            stdout,
+            f'Expected purity violation, got: {stdout}',
+        )
+
+    def test_pure_function_calls_external_impure(self):
+        resource = self._get_resource_path('pure_calls_external_impure.py')
+        config = self._get_resource_path('mypy_custom_multiple.ini')
+        stdout, stderr, exit_status = self.__run_mypy(resource, config)
+        self.assertEqual(0, exit_status, f'Mypy failed with exit code {exit_status}. Stdout: {stdout} Stderr: {stderr}')
+        self.assertIn(
+            "Function 'pure_func' is annotated as pure but calls impure functions",
+            stdout,
+            f'Expected purity violation, got: {stdout}',
+        )
