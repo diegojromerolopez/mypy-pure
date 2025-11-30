@@ -1,9 +1,13 @@
 BLACKLIST = {
-    # Builtins
+    # === Builtins ===
     'builtins.open',
     'builtins.print',
     'builtins.input',
-    # os module - File/Dir operations
+    'builtins.exec',
+    'builtins.eval',  # Can have side effects
+    'builtins.compile',  # Can have side effects
+    'builtins.__import__',
+    # === os module - File/Dir operations ===
     'os.remove',
     'os.unlink',
     'os.rmdir',
@@ -18,7 +22,9 @@ BLACKLIST = {
     'os.utime',
     'os.truncate',
     'os.ftruncate',
-    # os module - Process/System
+    'os.removedirs',
+    'os.renames',
+    # === os module - Process/System ===
     'os.system',
     'os.popen',
     'os.spawnl',
@@ -42,23 +48,37 @@ BLACKLIST = {
     'os.abort',
     'os.chdir',
     'os.fchdir',
-    # os module - I/O
+    'os.putenv',
+    'os.unsetenv',
+    'os.setuid',
+    'os.setgid',
+    'os.setpgrp',
+    # === os module - I/O ===
     'os.open',
     'os.read',
     'os.write',
     'os.close',
     'os.pipe',
-    # sys module
+    'os.dup',
+    'os.dup2',
+    # === sys module ===
     'sys.exit',
     'sys.stdout.write',
     'sys.stderr.write',
-    # subprocess
+    'sys.stdin.read',
+    'sys.stdin.readline',
+    'sys.setrecursionlimit',
+    'sys.settrace',
+    'sys.setprofile',
+    # === subprocess ===
     'subprocess.run',
     'subprocess.call',
     'subprocess.check_call',
     'subprocess.check_output',
     'subprocess.Popen',
-    # shutil
+    'subprocess.getstatusoutput',
+    'subprocess.getoutput',
+    # === shutil ===
     'shutil.rmtree',
     'shutil.copy',
     'shutil.copy2',
@@ -66,14 +86,21 @@ BLACKLIST = {
     'shutil.copytree',
     'shutil.move',
     'shutil.chown',
-    # time
+    'shutil.disk_usage',
+    'shutil.make_archive',
+    'shutil.unpack_archive',
+    # === time ===
     'time.sleep',
-    # random (state modification)
+    # === random (state modification) ===
     'random.seed',
-    # socket
+    'random.setstate',
+    # === socket ===
     'socket.socket',
     'socket.create_connection',
-    # pathlib (common write ops)
+    'socket.create_server',
+    'socket.fromfd',
+    'socket.socketpair',
+    # === pathlib (write operations) ===
     'pathlib.Path.write_text',
     'pathlib.Path.write_bytes',
     'pathlib.Path.touch',
@@ -82,4 +109,101 @@ BLACKLIST = {
     'pathlib.Path.rmdir',
     'pathlib.Path.rename',
     'pathlib.Path.replace',
+    'pathlib.Path.chmod',
+    'pathlib.Path.lchmod',
+    'pathlib.Path.symlink_to',
+    'pathlib.Path.hardlink_to',
+    # === tempfile ===
+    'tempfile.TemporaryFile',
+    'tempfile.NamedTemporaryFile',
+    'tempfile.TemporaryDirectory',
+    'tempfile.mkstemp',
+    'tempfile.mkdtemp',
+    # === logging ===
+    'logging.debug',
+    'logging.info',
+    'logging.warning',
+    'logging.error',
+    'logging.critical',
+    'logging.log',
+    'logging.exception',
+    'logging.basicConfig',
+    # === pickle (can execute arbitrary code) ===
+    'pickle.dump',
+    'pickle.dumps',
+    'pickle.load',
+    'pickle.loads',
+    # === shelve (persistent storage) ===
+    'shelve.open',
+    # === dbm (database) ===
+    'dbm.open',
+    'dbm.ndbm.open',
+    'dbm.gnu.open',
+    # === sqlite3 ===
+    'sqlite3.connect',
+    # === threading ===
+    'threading.Thread',
+    'threading.Lock',
+    'threading.RLock',
+    'threading.Semaphore',
+    'threading.Event',
+    'threading.Timer',
+    # === multiprocessing ===
+    'multiprocessing.Process',
+    'multiprocessing.Pool',
+    'multiprocessing.Queue',
+    'multiprocessing.Pipe',
+    # === signal ===
+    'signal.signal',
+    'signal.alarm',
+    'signal.pause',
+    # === atexit ===
+    'atexit.register',
+    'atexit.unregister',
+    # === webbrowser ===
+    'webbrowser.open',
+    'webbrowser.open_new',
+    'webbrowser.open_new_tab',
+    # === email.message (mutation) ===
+    'email.message.Message.attach',
+    'email.message.Message.add_header',
+    'email.message.Message.replace_header',
+    'email.message.Message.set_payload',
+    # === http.client ===
+    'http.client.HTTPConnection',
+    'http.client.HTTPSConnection',
+    # === urllib ===
+    'urllib.request.urlopen',
+    'urllib.request.urlretrieve',
+    'urllib.request.install_opener',
+    # === ftplib ===
+    'ftplib.FTP',
+    'ftplib.FTP_TLS',
+    # === smtplib ===
+    'smtplib.SMTP',
+    'smtplib.SMTP_SSL',
+    'smtplib.LMTP',
+    # === poplib ===
+    'poplib.POP3',
+    'poplib.POP3_SSL',
+    # === imaplib ===
+    'imaplib.IMAP4',
+    'imaplib.IMAP4_SSL',
+    # === telnetlib ===
+    'telnetlib.Telnet',
+    # === gc (garbage collection) ===
+    'gc.collect',
+    'gc.set_threshold',
+    'gc.set_debug',
+    'gc.enable',
+    'gc.disable',
+    # === warnings ===
+    'warnings.warn',
+    'warnings.warn_explicit',
+    'warnings.simplefilter',
+    'warnings.filterwarnings',
+    # === contextlib (some context managers have side effects) ===
+    'contextlib.redirect_stdout',
+    'contextlib.redirect_stderr',
+    'contextlib.suppress',
 }

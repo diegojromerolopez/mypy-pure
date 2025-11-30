@@ -1,16 +1,34 @@
-from __future__ import annotations
-
 import ast
+
+from mypy_pure.purity.types import (
+    CallGraph,
+    FuncName,
+    ImportAlias,
+    ImportFullName,
+    LineNo,
+)
 
 
 class PurityVisitor(ast.NodeVisitor):
     PURE_DECORATOR_FULLNAME = 'mypy_pure.decorators.pure'
 
     def __init__(self) -> None:
-        self.__imports: dict[str, str] = {}  # alias -> fullname
-        self.calls: dict[str, set[str]] = {}  # func_name -> set(callees)
-        self.pure_functions: dict[str, int] = {}  # func_name -> lineno
-        self.__current_function: str | None = None
+        self.__imports: dict[ImportAlias, ImportFullName] = {}  # alias -> fullname
+        self.__calls: CallGraph = {}  # func_name -> set(callees)
+        self.__pure_functions_lineno: dict[FuncName, LineNo] = {}  # func_name -> lineno
+        self.__current_function: FuncName | None = None
+
+    @property
+    def calls(self) -> CallGraph:
+        return self.__calls
+
+    @property
+    def pure_functions_lineno(self) -> dict[FuncName, LineNo]:
+        return self.__pure_functions_lineno
+
+    @property
+    def imports(self) -> dict[ImportAlias, ImportFullName]:
+        return self.__imports
 
     def visit_Import(self, node: ast.Import) -> None:
         for alias in node.names:
@@ -39,6 +57,12 @@ class PurityVisitor(ast.NodeVisitor):
         return None
 
     def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+        self.__handle_function_def(node)
+
+    def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> None:
+        self.__handle_function_def(node)
+
+    def __handle_function_def(self, node: ast.FunctionDef | ast.AsyncFunctionDef) -> None:
         # Check for @pure decorator
         is_pure = False
         for decorator in node.decorator_list:
@@ -58,11 +82,11 @@ class PurityVisitor(ast.NodeVisitor):
                     is_pure = True
 
         if is_pure:
-            self.pure_functions[node.name] = node.lineno
+            self.__pure_functions_lineno[node.name] = node.lineno
 
         prev_function = self.__current_function
         self.__current_function = node.name
-        self.calls[node.name] = set()
+        self.__calls[node.name] = set()
 
         self.generic_visit(node)
 
@@ -82,6 +106,6 @@ class PurityVisitor(ast.NodeVisitor):
                 callee_name = f'{base}.{node.func.attr}'
 
         if callee_name:
-            self.calls[self.__current_function].add(callee_name)
+            self.__calls[self.__current_function].add(callee_name)
 
         self.generic_visit(node)

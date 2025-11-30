@@ -1,4 +1,4 @@
-import external_module
+import external_module  # type: ignore[import-not-found]
 
 from mypy_pure.decorators import pure
 

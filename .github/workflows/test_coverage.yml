@@ -20,6 +20,6 @@ jobs:
           uv sync --all-groups
       - name: Generate the coverage report
         run: |
-          uv run coverage run --source=mypy_pure/tests -m unittest
-          uv run coverage report --fail-under=100
+          uv run coverage run --source=mypy_pure -m unittest
+          uv run coverage report --fail-under=95
           uv run coverage xml -o coverage.xml

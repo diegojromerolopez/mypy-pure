@@ -1,3 +1,3 @@
-"""mypy_pure package for static purity analysis."""
+from mypy_pure.decorators import pure  # noqa: F401
 
-__all__ = []
+__all__ = ['pure']
