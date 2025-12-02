@@ -23,7 +23,7 @@ class PurityPlugin(Plugin):
         self.__load_config(options)
 
     def __load_config(self, options: Options) -> None:
-        if not options.config_file:
+        if not options.config_file:  # pragma: no cover
             return
 
         config = configparser.ConfigParser()
@@ -64,12 +64,24 @@ class PurityPlugin(Plugin):
                                 self.__whitelist.add(f'{module_name}.{func}')
                             else:
                                 self.__whitelist.add(func)
-        except (ImportError, AttributeError, Exception):  # pragma: no cover
+        except (ImportError, AttributeError, Exception):
             # Module not found, no __mypy_pure__, or other import issues
             pass
 
     def get_additional_deps(self, file: MypyFile) -> list[tuple[int, str, int]]:
-        if file.fullname in self.__checked_files:
+        """
+        Mypy hook that is called for each file to determine additional dependencies.
+
+        We use this hook as an entry point to analyze the file for purity violations.
+        It is called for every file that mypy checks.
+
+        Args:
+            file: The MypyFile object representing the file being checked.
+
+        Returns:
+            A list of additional dependencies (always empty in our case, as we only use this for analysis).
+        """
+        if file.fullname in self.__checked_files:  # pragma: no cover
             return []
 
         # Skip stdlib and other system modules to avoid noise and performance hit

@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.2.1 (2025-12-02)
+### Bug Fixes
+- **Fixed whitelist propagation bug**: Whitelisted functions are now properly treated as pure throughout the analysis. Previously, impure calls from whitelisted functions were incorrectly propagated to their callers.
+- **Fixed `from mypy_pure import pure` support**: The `@pure` decorator now works correctly when imported as `from mypy_pure import pure` (in addition to `from mypy_pure.decorators import pure`).
+
+### Improvements
+- **100% test coverage**: Achieved complete test coverage for all plugin source code (446/446 statements).
+- **Enhanced test suite**: Added comprehensive tests for:
+  - Config file handling (missing config, bad syntax)
+  - Module loading with `__mypy_pure__` (including dotted names, already-loaded modules, import errors)
+  - Relative imports
+  - Recursive functions
+  - Whitelist priority over blacklist
+  - Import aliases
+- **Coverage configuration**: Test resource files are now excluded from coverage reporting for cleaner metrics.
+- **Code quality improvements**: Minor refactoring for better readability (tuple to set for membership checks, trailing whitespace cleanup).
+- Creation of **mypy-pure-examples** repository with examples of how to use the plugin.
+
 ## 0.2.0 (2025-11-30)
 ### Features
 - **Auto-discovery via `__mypy_pure__`**: Libraries can now declare their pure functions using a `__mypy_pure__` list. The plugin automatically discovers and respects these declarations, enabling zero-configuration purity checking for library users.

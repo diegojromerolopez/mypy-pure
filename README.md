@@ -125,6 +125,10 @@ def log_and_calculate(x: int, y: int) -> int:
     return x + y
 ```
 
+### More examples
+
+More examples can be found in the [mypy-pure-examples](https://github.com/diegojromerolopez/mypy-pure-examples) repository.
+
 ## Advanced Usage
 
 ### Configuration Options

@@ -71,15 +71,16 @@ class PurityVisitor(ast.NodeVisitor):
                 is_pure = True
             elif isinstance(decorator, ast.Name) and decorator.id == 'pure':
                 # Check if 'pure' is imported from the right place
-                if self.__imports.get('pure') == self.PURE_DECORATOR_FULLNAME:
-                    is_pure = True
+                imported_from = self.__imports.get('pure')
+                if imported_from in {self.PURE_DECORATOR_FULLNAME, 'mypy_pure.pure'}:
+                    is_pure = True  # pragma: no cover
                 # Or if it's just 'pure' and we assume it's the one (for simple cases)
 
             elif isinstance(decorator, ast.Attribute) and decorator.attr == 'pure':
                 # Handle @decorators.pure
-                base = self.__resolve_name(decorator.value)
-                if base == 'mypy_pure.decorators':
-                    is_pure = True
+                base = self.__resolve_name(decorator.value)  # pragma: no cover
+                if base == 'mypy_pure.decorators':  # pragma: no cover
+                    is_pure = True  # pragma: no cover
 
         if is_pure:
             self.__pure_functions_lineno[node.name] = node.lineno

@@ -1,6 +1,6 @@
 [project]
 name = "mypy-pure"
-version = "0.2.0"
+version = "0.2.1"
 description = "A mypy plugin that adds support for checking pure functions."
 authors = [
   { name="Diego J. Romero López", email="diegojromerolopez@gmail.com" }
@@ -61,4 +61,9 @@ warn_unused_configs = true
 disallow_untyped_defs = false
 exclude = [
     "mypy_pure/tests/resources/",
+]
+
+[tool.coverage.run]
+omit = [
+    "mypy_pure/tests/resources/*",
 ]
