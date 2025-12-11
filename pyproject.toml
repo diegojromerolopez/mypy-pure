@@ -1,6 +1,6 @@
 [project]
 name = "mypy-pure"
-version = "0.2.1"
+version = "0.2.2"
 description = "A mypy plugin that adds support for checking pure functions."
 authors = [
   { name="Diego J. Romero López", email="diegojromerolopez@gmail.com" }
