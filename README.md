@@ -374,7 +374,7 @@ git clone https://github.com/diegojromerolopez/mypy-pure.git
 cd mypy-pure
 
 # Install dependencies
-pip install -e ".[dev]"
+uv sync
 
 # Run tests
 pytest
@@ -394,8 +394,8 @@ This project was created with the assistance of AI tools (ChatGPT and Antigravit
 ## Related Projects
 
 - [mypy](https://github.com/python/mypy) - Optional static typing for Python
-- [returns](https://github.com/dry-python/returns) - Make your functions return something meaningful
-- [deal](https://github.com/life4/deal) - Design by contract for Python
+- [mypy-raise](https://github.com/diegojromerolopez/mypy-raise) - A mypy plugin that enforces exception declarations in function signatures, ensuring functions explicitly declare all exceptions they may raise.
+- [mypy-plugins-examples](https://github.com/diegojromerolopez/mypy-plugins-examples) - A project that contains some examples for my mypy-pure and mypy-raise plugins.
 
 ---
 
